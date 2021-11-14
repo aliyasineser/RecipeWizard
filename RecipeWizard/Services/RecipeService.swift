@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import Alamofire
-import RxSwift
 
 class NetworkManager{
     static let shared = NetworkManager()

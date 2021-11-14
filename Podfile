@@ -1,8 +1,4 @@
 target 'RecipeWizard' do
-  use_frameworks!
-  pod 'Alamofire'
-  pod 'RxSwift'  
-  pod 'RxCocoa'    
-  pod 'SDWebImage'
+  use_frameworks!  
   pod 'Kingfisher'
 end
