@@ -23,10 +23,11 @@ class MealListViewController: UIViewController, UITableViewDataSource, UITableVi
         self.mealListTableView.delegate = self
         
         callToViewModelForUIUpdate()
-    }
+    } 
 
     override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+        // After an acceptable delay, check the items and return if there are items. Rx couldn't use for timewise.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: {
             if self.mealListViewModel.meals.isEmpty {
                 let alert = UIAlertController(title: "No Recipes", message: "Such a shame, I couldn't find a recipe for you..", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Go Back", style: .cancel, handler: { (_) in
