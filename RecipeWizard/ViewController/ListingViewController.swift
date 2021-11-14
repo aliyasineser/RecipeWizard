@@ -24,19 +24,25 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var ingredientsTableView: UITableView!
     
     var listingViewModel = ListingViewModel()
-    private var dataSource : GenericTableViewDataSource<IngredientsTableViewCell,String>!
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Table View Delegation
         self.ingredientsTableView.dataSource = self
         self.ingredientsTableView.delegate = self
+        
+        self.listingViewModel = ListingViewModel()
+        
         callToViewModelForUIUpdate()
     }
     
+    // UI Setup function
     func callToViewModelForUIUpdate(){
-            
-        self.listingViewModel = ListingViewModel()
+        
+        findRecipeButton.tintColor = .systemOrange
+        addIngredientButton.tintColor = .systemOrange
+        
         self.listingViewModel.bindIngredientToVMToVC = {
             self.updateDataSource()
         }
@@ -48,6 +54,7 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
+    // Add Button for the ingredient, checks if it's added before and also removes the text field
     @IBAction func addIngredient(_ sender: Any) {
         let ingredient = ingredientTextField.text
         
@@ -57,14 +64,14 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
+    // Navigation for meal list screen. Passing the preprocessed ingredients.
     @IBAction func searchRecipes(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "MealList", bundle: nil)
         let resultViewController = storyBoard.instantiateViewController(withIdentifier: "MealListViewController") as! MealListViewController
         var parameterizedIngredients: [String] = [] // Ingredients will be preprocessed for the network call
         listingViewModel.ingredients.map({
             parameterizedIngredients.append( $0.lowercased().trimmingCharacters(in: CharacterSet.whitespaces).replacingOccurrences(of:" ", with: "_"))
-            
-        })
+            })
         resultViewController.ingredients = parameterizedIngredients
         self.navigationController?.pushViewController(resultViewController, animated: true)
     }
@@ -75,23 +82,14 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-
-            //1. remove data from model
             listingViewModel.ingredients.remove(at: indexPath.row)
-
-            //2. remove row from view
             tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
-            
-            //3. custom method to update your view after removing
             tableView.reloadData()
-            
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: IngredientsTableViewCell.identifier, for: indexPath) as! IngredientsTableViewCell
-        
         cell.ingredient = listingViewModel.ingredients[indexPath.row]
         return cell
     }

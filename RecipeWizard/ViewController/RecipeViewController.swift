@@ -13,30 +13,34 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var mealImage: UIImageView!
     @IBOutlet weak var ingredientsTableView: UITableView!
     @IBOutlet weak var mealRecipeLabel: UILabel!
+    @IBOutlet weak var videoButton: UIButton!
+    
+    static let identifier = "RecipeViewController"
     
     var recipeViewModel: RecipeViewModel!
     var theMeal: Meal?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.ingredientsTableView.dataSource = self
         self.ingredientsTableView.delegate = self
-        
-        ingredientsTableView.largeContentTitle = "Ingredients"
+        recipeViewModel = RecipeViewModel(meal: theMeal!)
         callToViewModelForUIUpdate()
     }
     
     func callToViewModelForUIUpdate(){
-        recipeViewModel = RecipeViewModel(meal: theMeal!)
-        
         self.recipeViewModel.bindRecipeToVMToVC = {
             self.updateDataSource()
         }
     }
     
+    func isYoutubeButtonEnabled(_ enabled: Bool) {
+        self.videoButton.isEnabled = enabled
+    }
+    
     func updateDataSource(){
-        DispatchQueue.main.async {            self.mealImage.kf.setImage(with: URL(string: self.recipeViewModel.recipe?.strMealThumb ?? ""))
+        DispatchQueue.main.async {
+            self.mealImage.kf.setImage(with: URL(string: self.recipeViewModel.recipe?.strMealThumb ?? ""))
             self.mealRecipeLabel.text = self.recipeViewModel.recipe?.strInstructions
             self.mealName.text = self.recipeViewModel.recipe?.strMeal
             self.ingredientsTableView.reloadData()
@@ -48,7 +52,6 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: IngredientDetailTableViewCell.identifier, for: indexPath) as! IngredientDetailTableViewCell
         
         let arrayValues = recipeViewModel.recipe?.ingredients.values.map({$0})
@@ -59,5 +62,8 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    @IBAction func watchVideoButton(_ sender: Any) {
+        UIApplication.shared.openURL(NSURL(string: recipeViewModel.recipe?.strYoutube ?? "https://www.youtube.com")! as URL)
+    }
     
 }

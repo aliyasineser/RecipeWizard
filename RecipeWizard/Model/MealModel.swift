@@ -98,64 +98,67 @@ struct RecipeModel {
         self.strCreativeCommonsConfirmed = recipe.strCreativeCommonsConfirmed
         self.dateModified = recipe.dateModified
         self.ingredients = [:]
-        if let ing = recipe.strIngredient1, let mes = recipe.strMeasure1 {
+        
+        // Messy code, can be written in a loop if Recipe struct is bypassed and look from the lookup. Timewise, skipped
+        // Also empty string could be checked better.
+        if let ing = recipe.strIngredient1, let mes = recipe.strMeasure1, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient2, let mes = recipe.strMeasure2 {
+        if let ing = recipe.strIngredient2, let mes = recipe.strMeasure2, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient3, let mes = recipe.strMeasure3 {
+        if let ing = recipe.strIngredient3, let mes = recipe.strMeasure3, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient4, let mes = recipe.strMeasure4 {
+        if let ing = recipe.strIngredient4, let mes = recipe.strMeasure4, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient5, let mes = recipe.strMeasure5 {
+        if let ing = recipe.strIngredient5, let mes = recipe.strMeasure5, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient6, let mes = recipe.strMeasure6 {
+        if let ing = recipe.strIngredient6, let mes = recipe.strMeasure6, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient7, let mes = recipe.strMeasure7 {
+        if let ing = recipe.strIngredient7, let mes = recipe.strMeasure7, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient8, let mes = recipe.strMeasure8 {
+        if let ing = recipe.strIngredient8, let mes = recipe.strMeasure8, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient9, let mes = recipe.strMeasure9 {
+        if let ing = recipe.strIngredient9, let mes = recipe.strMeasure9, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient10, let mes = recipe.strMeasure10 {
+        if let ing = recipe.strIngredient10, let mes = recipe.strMeasure10, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient11, let mes = recipe.strMeasure11 {
+        if let ing = recipe.strIngredient11, let mes = recipe.strMeasure11, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient12, let mes = recipe.strMeasure12 {
+        if let ing = recipe.strIngredient12, let mes = recipe.strMeasure12, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient13, let mes = recipe.strMeasure13 {
+        if let ing = recipe.strIngredient13, let mes = recipe.strMeasure13, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient14, let mes = recipe.strMeasure14 {
+        if let ing = recipe.strIngredient14, let mes = recipe.strMeasure14, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient15, let mes = recipe.strMeasure15 {
+        if let ing = recipe.strIngredient15, let mes = recipe.strMeasure15, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient16, let mes = recipe.strMeasure16 {
+        if let ing = recipe.strIngredient16, let mes = recipe.strMeasure16, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient17, let mes = recipe.strMeasure17 {
+        if let ing = recipe.strIngredient17, let mes = recipe.strMeasure17, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient18, let mes = recipe.strMeasure18 {
+        if let ing = recipe.strIngredient18, let mes = recipe.strMeasure18, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient19, let mes = recipe.strMeasure19 {
+        if let ing = recipe.strIngredient19, let mes = recipe.strMeasure19, ing != "" {
             self.ingredients[ing] = mes
         }
-        if let ing = recipe.strIngredient20, let mes = recipe.strMeasure20 {
+        if let ing = recipe.strIngredient20, let mes = recipe.strMeasure20, ing != "" {
             self.ingredients[ing] = mes
         }
         
@@ -172,6 +175,7 @@ struct Meal: Codable {
     let idMeal: String
 }
 
+// Meal Details, such as recipe
 struct Lookup: Codable {
     let meals: [Recipe]
 }

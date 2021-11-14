@@ -12,7 +12,7 @@ class RecipeViewModel {
     
     var recipe: RecipeModel? {
         didSet {
-           self.bindRecipeToVMToVC()
+            self.bindRecipeToVMToVC()
         }
     }
     
@@ -23,6 +23,7 @@ class RecipeViewModel {
     }
     
     var bindRecipeToVMToVC : (() -> ()) = {}
+    var bindUIInitilizationMVToVC : ((Bool) -> ()) = {_ in }
     
     init(meal: Meal) {
         self.meal = meal
@@ -35,6 +36,7 @@ class RecipeViewModel {
                     self?.recipe = RecipeModel(recipe: foundRecipe)
                 }
                 self?.bindRecipeToVMToVC()
+                self?.bindUIInitilizationMVToVC(self?.recipe?.strYoutube != nil)
             } catch {
                 // Avoidable, the array will be empty
             }

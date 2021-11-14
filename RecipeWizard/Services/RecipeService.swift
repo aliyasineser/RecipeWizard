@@ -9,12 +9,7 @@ import Foundation
 import Alamofire
 import RxSwift
 
-struct URLRequestException: Error {
-    
-}
-
 class NetworkManager{
-    
     static let shared = NetworkManager()
     
     func fetchMeal(with ingredients: [String] , completion: @escaping (Result<FilteredMeals, Error>) -> () ) {
@@ -59,14 +54,13 @@ class NetworkManager{
 
 
 struct RecipeServer {
-    // API Key should be stored securely. However, I put it for the time concerns.
+    // API Key should be stored securely. However, I put it here for the time concerns.
     static let apiKey = "9973533"
     static let baseUrl = "https://www.themealdb.com/api/json/v2"
     
 }
 
 enum RecipeRequest {
- 
     case filterByMultiIngredient([String])
     case lookup(String)
 

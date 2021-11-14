@@ -7,10 +7,8 @@
 
 import Foundation
 
-
 class ListingViewModel {
-    
-    
+
     var ingredients: [String] {
         didSet {
            self.bindIngredientToVMToVC()
@@ -18,11 +16,10 @@ class ListingViewModel {
     }
     
     var bindIngredientToVMToVC : (() -> ()) = {}
-
     
     init() {
         self.ingredients = []
         self.bindIngredientToVMToVC()
     }
-    
+
 }
