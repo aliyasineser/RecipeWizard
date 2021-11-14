@@ -1,0 +1,6 @@
+framework module Pods_RecipeWizard {
+  umbrella header "Pods-RecipeWizard-umbrella.h"
+
+  export *
+  module * { export * }
+}
