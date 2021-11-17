@@ -77,12 +77,10 @@ class MealListViewController: UIViewController, UITableViewDataSource, UITableVi
         let chosenMeal = mealListViewModel?.meals[indexPath.row]
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "RecipeView", bundle: nil)
-        weak var resultViewController = storyBoard.instantiateViewController(withIdentifier: RecipeViewController.identifier) as! RecipeViewController
+        let resultViewController = storyBoard.instantiateViewController(withIdentifier: RecipeViewController.identifier) as! RecipeViewController
         
-        resultViewController?.theMeal = chosenMeal
-        if let resultViewController = resultViewController {
-            navigationController?.pushViewController(resultViewController, animated: true)
-        }
+        resultViewController.theMeal = chosenMeal
+        navigationController?.pushViewController(resultViewController, animated: true)
         
     }
     

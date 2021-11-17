@@ -65,13 +65,11 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
     // Navigation for meal list screen. Passing the preprocessed ingredients.
     @IBAction func searchRecipes(_ sender: Any) {
         let storyBoard : UIStoryboard? = UIStoryboard(name: "MealList", bundle: nil)
-        weak var resultViewController = storyBoard?.instantiateViewController(withIdentifier: MealListViewController.identifier) as! MealListViewController
+        let resultViewController = storyBoard?.instantiateViewController(withIdentifier: MealListViewController.identifier) as! MealListViewController
         var parameterizedIngredients: [String] = [] // Ingredients will be preprocessed for the network call
         listingViewModel.ingredients.forEach{parameterizedIngredients.append( $0.lowercased().trimmingCharacters(in: CharacterSet.whitespaces).replacingOccurrences(of:" ", with: "_"))}
-        resultViewController?.ingredients = parameterizedIngredients
-        if let resultViewController = resultViewController {
-            self.navigationController?.pushViewController(resultViewController, animated: true)
-        }
+        resultViewController.ingredients = parameterizedIngredients
+        self.navigationController?.pushViewController(resultViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
