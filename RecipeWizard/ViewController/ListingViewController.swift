@@ -32,8 +32,6 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
         self.ingredientsTableView.dataSource = self
         self.ingredientsTableView.delegate = self
         
-        self.listingViewModel = ListingViewModel()
-        
         callToViewModelForUIUpdate()
     }
     
@@ -43,14 +41,14 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
         findRecipeButton.tintColor = .systemOrange
         addIngredientButton.tintColor = .systemOrange
         
-        self.listingViewModel.bindIngredientToVMToVC = {
-            self.updateDataSource()
+        self.listingViewModel.bindIngredientToVMToVC = { [weak self] in
+            self?.updateDataSource()
         }
     }
 
     func updateDataSource(){
-        DispatchQueue.main.async {
-            self.ingredientsTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.ingredientsTableView.reloadData()
         }
     }
     
@@ -66,14 +64,14 @@ class ListingViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // Navigation for meal list screen. Passing the preprocessed ingredients.
     @IBAction func searchRecipes(_ sender: Any) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "MealList", bundle: nil)
-        let resultViewController = storyBoard.instantiateViewController(withIdentifier: "MealListViewController") as! MealListViewController
+        let storyBoard : UIStoryboard? = UIStoryboard(name: "MealList", bundle: nil)
+        weak var resultViewController = storyBoard?.instantiateViewController(withIdentifier: MealListViewController.identifier) as! MealListViewController
         var parameterizedIngredients: [String] = [] // Ingredients will be preprocessed for the network call
-        listingViewModel.ingredients.map({
-            parameterizedIngredients.append( $0.lowercased().trimmingCharacters(in: CharacterSet.whitespaces).replacingOccurrences(of:" ", with: "_"))
-            })
-        resultViewController.ingredients = parameterizedIngredients
-        self.navigationController?.pushViewController(resultViewController, animated: true)
+        listingViewModel.ingredients.forEach{parameterizedIngredients.append( $0.lowercased().trimmingCharacters(in: CharacterSet.whitespaces).replacingOccurrences(of:" ", with: "_"))}
+        resultViewController?.ingredients = parameterizedIngredients
+        if let resultViewController = resultViewController {
+            self.navigationController?.pushViewController(resultViewController, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

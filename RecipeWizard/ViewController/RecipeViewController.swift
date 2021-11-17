@@ -17,7 +17,7 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     static let identifier = "RecipeViewController"
     
-    var recipeViewModel: RecipeViewModel!
+    var recipeViewModel: RecipeViewModel?
     var theMeal: Meal?
     
     override func viewDidLoad() {
@@ -25,12 +25,14 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.ingredientsTableView.dataSource = self
         self.ingredientsTableView.delegate = self
         recipeViewModel = RecipeViewModel(meal: theMeal!)
+        
         callToViewModelForUIUpdate()
     }
     
     func callToViewModelForUIUpdate(){
-        self.recipeViewModel.bindRecipeToVMToVC = {
-            self.updateDataSource()
+        self.recipeViewModel?.bindRecipeToVMToVC = { [weak self] in
+            self?.isYoutubeButtonEnabled(self?.recipeViewModel?.recipe?.strYoutube == nil)
+            self?.updateDataSource()
         }
     }
     
@@ -39,23 +41,23 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func updateDataSource(){
-        DispatchQueue.main.async {
-            self.mealImage.kf.setImage(with: URL(string: self.recipeViewModel.recipe?.strMealThumb ?? ""))
-            self.mealRecipeLabel.text = self.recipeViewModel.recipe?.strInstructions
-            self.mealName.text = self.recipeViewModel.recipe?.strMeal
-            self.ingredientsTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.mealImage.kf.setImage(with: URL(string: self?.recipeViewModel?.recipe?.strMealThumb ?? ""))
+            self?.mealRecipeLabel.text = self?.recipeViewModel?.recipe?.strInstructions
+            self?.mealName.text = self?.recipeViewModel?.recipe?.strMeal
+            self?.ingredientsTableView.reloadData()
         }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipeViewModel.recipe?.ingredients.count ?? 0
+        recipeViewModel?.recipe?.ingredients.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: IngredientDetailTableViewCell.identifier, for: indexPath) as! IngredientDetailTableViewCell
         
-        let arrayValues = recipeViewModel.recipe?.ingredients.values.map({$0})
-        let arrayKeys = recipeViewModel.recipe?.ingredients.keys.map({$0})
+        let arrayValues = recipeViewModel?.recipe?.ingredients.values.map({$0})
+        let arrayKeys = recipeViewModel?.recipe?.ingredients.keys.map({$0})
 
         cell.ingredientName.text = arrayKeys?[indexPath.row]
         cell.ingredientAmount.text = arrayValues?[indexPath.row]
@@ -63,7 +65,7 @@ class RecipeViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func watchVideoButton(_ sender: Any) {
-        UIApplication.shared.openURL(NSURL(string: recipeViewModel.recipe?.strYoutube ?? "https://www.youtube.com")! as URL)
+        UIApplication.shared.openURL(NSURL(string: recipeViewModel?.recipe?.strYoutube ?? "https://www.youtube.com")! as URL)
     }
     
 }
